@@ -1,0 +1,24 @@
+@using TCAdmin.SDK.Objects
+@using Service = TCAdmin.GameHosting.SDK.Objects.Service
+@{
+    var service = Service.GetSelectedService();
+    if (service == null)
+    {
+        return;
+    }
+    
+    var user = TCAdmin.SDK.Session.GetCurrentUser();
+    if (user.UserType == UserType.Admin || user.UserType == UserType.SubAdmin)
+    {
+        return;
+    }
+
+    if(service.Variables.HasValue("_ServiceMaintenance::Maintenance") && (bool) service.Variables["_ServiceMaintenance::Maintenance"])
+    {
+        var currentUrl = Request.Url.AbsoluteUri;
+        if (!currentUrl.Contains("Service/Maintenance"))
+        {
+            this.Response.Redirect(string.Format("/Service/Maintenance/{0}", Model.ServiceId), true);
+        }
+    }
+}

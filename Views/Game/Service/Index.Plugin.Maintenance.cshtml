@@ -1,0 +1,35 @@
+@using Kendo.Mvc.UI
+@model Models.Game.ServiceAspxModel
+
+@{
+
+    var service = TCAdmin.GameHosting.SDK.Objects.Service.GetSelectedService();
+    var maintenance = false;
+    if (service.Variables.HasValue("_ServiceMaintenance::Maintenance"))
+    {
+        maintenance = (bool) service.Variables["_ServiceMaintenance::Maintenance"];
+    }
+    
+    var currentUrl = Request.Url.AbsoluteUri;
+    if (currentUrl.Contains("Service/Actions"))
+    {
+        <label>Service Maintenance: </label>
+        @(Html.Kendo().Switch()
+                .Name("switch")
+                .Checked(maintenance)
+                .Messages(c => c.Checked("ON").Unchecked("OFF"))
+                .Events(x => x.Change("switchChanged")))
+    }
+}
+
+<script> 
+    function switchChanged(e) {
+        $.ajax({
+            url: "/Service/Maintenance/MaintenanceSwitch/" + @Model.ServiceId,
+            data: JSON.stringify({ switchy: e.checked }),
+            datatype: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8'
+        });
+    }
+</script>

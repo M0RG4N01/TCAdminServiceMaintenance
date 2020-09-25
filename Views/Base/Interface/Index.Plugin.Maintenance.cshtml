@@ -1,0 +1,26 @@
+@using Service = TCAdmin.GameHosting.SDK.Objects.Service
+@{
+    var key = "_ServiceMaintenance::Maintenance";
+    var services = Service.GetServices(TCAdmin.SDK.Session.GetCurrentUser(), false).Cast<Service>().Where(x => x.Variables.HasValue(key) && (bool) x.Variables[key]);
+    var maintenanceServices = services.Select(service => service.ServiceId).ToArray();
+}
+<script>
+const ServicesInMaintenanceMode = '[' + @string.Join(", ", maintenanceServices) + ']';
+
+$(document).ready(function () { 
+    $("#aspxcontent").on('load', function() { //Credit to Luis for the Aspx stuff <3
+	if($("#aspxcontent")[0].contentWindow.TCAdmin && $("#aspxcontent")[0].contentWindow.TCAdmin.ServiceManager) {
+            const originalStart = $("#aspxcontent")[0].contentWindow.TCAdmin.ServiceManager.start;
+            $("#aspxcontent")[0].contentWindow.TCAdmin.ServiceManager.start = function(serviceId, statusControl, hiddenStatusControl, startControl, restartControl, stopControl){
+                let isInMaintenance = ServicesInMaintenanceMode.indexOf(serviceId) != -1;      
+                if(!isInMaintenance) {
+                    originalStart(serviceId, statusControl, hiddenStatusControl, startControl, restartControl, stopControl);
+                }else {
+                    const link = "/Service/Maintenance/" + serviceId;
+                    window.location.replace(link);
+                }
+            }
+        }
+    });
+});
+</script>
