@@ -26,7 +26,7 @@ namespace Game
             {
                 try {
                     serviceFromGame.Variables["_ServiceMaintenance::Maintenance"] = switchy;
-                    serviceFromGame.Variables["_ServiceMaintenance::AdminId"] = TCAdmin.SDK.Session.GetCurrentUser().UserId;
+                    serviceFromGame.Variables["_ServiceMaintenance::AdminUser"] = TCAdmin.SDK.Session.GetCurrentUser().UserName;
                     serviceFromGame.Variables["_ServiceMaintenance::StartTime"] = DateTime.UtcNow;
                     serviceFromGame.Save();
                 }
@@ -40,7 +40,7 @@ namespace Game
                 try
                 {
                     serviceFromGame.Variables["_ServiceMaintenance::Maintenance"] = switchy;
-                    serviceFromGame.Variables["_ServiceMaintenance::AdminId"] = "";
+                    serviceFromGame.Variables["_ServiceMaintenance::AdminUser"] = "";
                     serviceFromGame.Variables["_ServiceMaintenance::StartTime"] = "";
                     serviceFromGame.Save();
                 }

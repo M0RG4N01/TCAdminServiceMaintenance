@@ -60,8 +60,7 @@
 </style>
 
 @{
-    var adminId = Model.Service.Variables["_ServiceMaintenance::AdminId"];
-    var admin = new User(adminId);
+    var adminUser = Model.Service.Variables["_ServiceMaintenance::AdminUser"];
     var startTime = TCAdmin.SDK.Misc.Dates.UniversalTimeToCurrentTimeZone( DateTime.SpecifyKind(Model.Service.Variables["_ServiceMaintenance::StartTime"], DateTimeKind.Utc));
 }
 
@@ -78,7 +77,7 @@
                                                                                     <li>Service Owner: @Model.Service.UserName</li><br/>
                                                                                     <li>Service Id: @Model.Service.ServiceId</li><br/></ul></div><br/>
                 <row class="font-weight-bold" style="margin: auto"><text style="font-family:inherit;font-size:19px;line-height:normal;font-weight:400;margin:0 0 14px">Started By: </text>
-                    <div class="k-card-body"><text>@admin.UserName</text></div>
+                    <div class="k-card-body"><text>@adminUser</text></div>
                 <text style="font-family:inherit;font-size:19px;line-height:normal;font-weight:400;margin:0 0 14px">Time Started: </text><br/>
                     <div class="k-card-body"><text>@startTime.ToString()</text></div></row>
             </row>
