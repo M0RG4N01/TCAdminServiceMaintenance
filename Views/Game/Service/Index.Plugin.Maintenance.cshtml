@@ -1,4 +1,5 @@
 @using Kendo.Mvc.UI
+@using TCAdmin.SDK.Objects
 @model Models.Game.ServiceAspxModel
 
 @{
@@ -7,7 +8,7 @@
     var maintenance = false;
     if (service.Variables.HasValue("_ServiceMaintenance::Maintenance"))
     {
-        maintenance = (bool)service.Variables["_ServiceMaintenance::Maintenance"];
+        maintenance = (bool) service.Variables["_ServiceMaintenance::Maintenance"];
     }
 
     var currentUrl = Request.Url.AbsoluteUri;
