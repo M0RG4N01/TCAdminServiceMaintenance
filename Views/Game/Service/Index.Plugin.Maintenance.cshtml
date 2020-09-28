@@ -1,4 +1,5 @@
 @using Kendo.Mvc.UI
+@using TCAdmin.SDK.Objects
 @model Models.Game.ServiceAspxModel
 
 @{
@@ -9,9 +10,10 @@
     {
         maintenance = (bool) service.Variables["_ServiceMaintenance::Maintenance"];
     }
-    
+
     var currentUrl = Request.Url.AbsoluteUri;
-    if (currentUrl.Contains("Service/Actions"))
+    var user = TCAdmin.SDK.Session.GetCurrentUser();
+    if (currentUrl.Contains("Service/Actions") && user.UserType == UserType.Admin || user.UserType == UserType.SubAdmin)
     {
         <label>Service Maintenance: </label>
         @(Html.Kendo().Switch()
@@ -22,7 +24,8 @@
     }
 }
 
-<script> 
+<script>
+
     function switchChanged(e) {
         $.ajax({
             url: "/Service/Maintenance/MaintenanceSwitch/" + @Model.ServiceId,
