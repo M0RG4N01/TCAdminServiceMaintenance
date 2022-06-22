@@ -14,14 +14,12 @@ $(document).ready(function () {
             const originalStart = $("#aspxcontent")[0].contentWindow.TCAdmin.ServiceManager.start;
             $("#aspxcontent")[0].contentWindow.TCAdmin.ServiceManager.start = function(serviceId, statusControl, hiddenStatusControl, startControl, restartControl, stopControl){
                 let isInMaintenance = ServicesInMaintenanceMode.indexOf(serviceId) != -1;  
-                $.each(ServicesInMaintenanceMode, function () {
-                    if(!isInMaintenance) {
-                         originalStart(serviceId, statusControl, hiddenStatusControl, startControl, restartControl, stopControl);
-                    }else {
-                            const link = "/Service/Maintenance/" + serviceId;
-                            window.location.replace(link);
-                    }
-                });
+                if(!isInMaintenance){
+                  originalStart(serviceId, statusControl, hiddenStatusControl, startControl, restartControl, stopControl);
+                } else {
+                  let link = "/Service/Maintenance/" + serviceId;
+                  window.location.replace(link);
+                }
             }
         }
     });
